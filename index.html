@@ -14,7 +14,8 @@
 
 <body>
     <header>
-        <div class="logo"><span>ELITE</span> <span>AUDIT</span></div>
+        <div class="logo" onclick="toggleAdmin()" style="cursor: pointer;" title="Admin Dashboard"><span>ELITE</span>
+            <span>AUDIT</span></div>
         <nav>
             <ul>
                 <li><a href="#" class="active" data-tr="nav_home">Bosh sahifa</a></li>
@@ -63,6 +64,10 @@
                     <div class="stat-box">
                         <span class="number">1200+</span>
                         <span class="label" data-tr="stat_audits">Successful Audits</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="number" id="visitor-count">1</span>
+                        <span class="label">Hozirda foydalanmoqda</span>
                     </div>
                     <div class="stat-box">
                         <span class="number">2.5x</span>
@@ -137,39 +142,75 @@
                 </div>
             </div>
         </section>
-        <!-- Business Systems Listing -->
-        <section id="business-systems" class="business-list">
-            <div class="section-title">
-                <h2 data-tr="sys_title">Biznes Strukturasi va Tizimlari</h2>
-                <p data-tr="sys_desc">Audit natijasida biz quyidagi tizimlarni biznesingizga joriy qilamiz:</p>
-            </div>
-            <div class="list-grid">
-                <div class="list-item">
-                    <i>📊</i>
-                    <div>
-                        <h4 data-tr="sys_1_t">CRM Integratsiyasi</h4>
-                        <p data-tr="sys_1_d">Mijozlar bazasini 100% nazorat qilish va sotuv konversiyasini oshirish.</p>
+
+        <!-- Audit & Analytics Section -->
+        <section id="audit-section" class="audit-section" style="display: none;">
+            <div class="audit-container glass-card">
+                <div id="progressContainer" class="progress-wrap">
+                    <div class="progress-info">
+                        <span id="progressText">Boshlash</span>
+                        <span id="percentText">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="progressBar" class="progress-fill"></div>
                     </div>
                 </div>
-                <div class="list-item">
-                    <i>👥</i>
-                    <div>
-                        <h4 data-tr="sys_2_t">Sotuv Bo'limi</h4>
-                        <p data-tr="sys_2_d">Professional menejerlar va scriptlar asosida ishlaydigan bo'lim qurish.</p>
-                    </div>
+
+                <div id="step-form">
+                    <!-- Questions will be injected here by JS -->
                 </div>
-                <div class="list-item">
-                    <i>📣</i>
-                    <div>
-                        <h4 data-tr="sys_3_t">Marketing Strategiyasi</h4>
-                        <p data-tr="sys_3_d">Target, kontekst va SMM orqali lidlar oqimini barqaror qilish.</p>
+
+                <!-- Results View (Hidden by default) -->
+                <div id="results" class="results-view hidden">
+                    <div class="results-header">
+                        <h2 data-tr="hero_title">Audit Natijalari</h2>
+                        <p id="clientSummary">Biznesingiz tahlil qilindi.</p>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="res-card">
+                            <span class="label">Maqsadli Foyda</span>
+                            <h3 id="resTargetProfit">$0</h3>
+                        </div>
+                        <div class="res-card">
+                            <span class="label">Kerakli Lidlar</span>
+                            <h3 id="resLeads">0</h3>
+                        </div>
+                        <div class="res-card">
+                            <span class="label">Optimal Byudjet</span>
+                            <h3 id="resBudget">$0</h3>
+                        </div>
+                        <div class="res-card">
+                            <span class="label">Xavf Darajasi</span>
+                            <h3 id="resRisk">Past</h3>
+                        </div>
+                    </div>
+
+                    <div class="charts-wrap">
+                        <div class="chart-box glass">
+                            <h4>Business Health Score</h4>
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <div class="chart-box glass">
+                            <h4>Moliyaviy Bashorat</h4>
+                            <canvas id="auditChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="recommendations glass">
+                        <h4>Strategik Tavsiyalar:</h4>
+                        <ul id="recommendationList">
+                            <!-- Recommendations injected here -->
+                        </ul>
+                    </div>
+
+                    <div class="result-actions">
+                        <button class="btn-primary" onclick="trackContact('tg')">Mutaxassis bilan bog'lanish</button>
+                        <button class="btn-outline" onclick="restart()">Qayta boshlash</button>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- (Audit Section remains same structure but updated with data-tr) -->
-        <!-- ... -->
 
     </main>
 

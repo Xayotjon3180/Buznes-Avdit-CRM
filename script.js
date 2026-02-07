@@ -38,6 +38,10 @@ function updateAdminUI() {
             <div class="stat">Contacts: ${stats.contacts}</div>
         `;
     }
+    const visitorDisplay = document.getElementById('visitor-count');
+    if (visitorDisplay) {
+        visitorDisplay.innerText = stats.visitors + 120; // Simulated active + base
+    }
 }
 
 function toggleAdmin() {
@@ -134,7 +138,8 @@ const questions = [
             'UZ': ["Biznes egasi", "Direktor / Rahbar", "Marketing menejeri", "Sotuv menejeri"],
             'RU': ["Владелец", "Директор / Руководитель", "Маркетолог", "Менеджер по продажам"],
             'EN': ["Business Owner", "Director / Manager", "Marketing Manager", "Sales Manager"]
-        }
+        },
+        values: ["owner", "manager", "marketing", "sales"]
     },
     {
         id: "crm",
@@ -144,7 +149,8 @@ const questions = [
             'UZ': ["Ha, foydalanamiz", "Yo'q, hali o'rnatmaganmiz"],
             'RU': ["Да, используем", "Нет, еще не установили"],
             'EN': ["Yes, we use one", "No, not yet"]
-        }
+        },
+        values: ["yes", "no"]
     },
     {
         id: "salesTeam",
@@ -154,31 +160,77 @@ const questions = [
             'UZ': ["Ha, bor", "Yo'q, o'zim sotaman"],
             'RU': ["Да, есть", "Нет, продаю сам"],
             'EN': ["Yes, we have one", "No, I sell myself"]
-        }
+        },
+        values: ["yes", "no"]
     },
     {
         id: "targetProfit",
         questions: { 'UZ': "Maqsadingiz - oylik sof foyda ($)?", 'RU': "Ваша цель - чистая прибыль в месяц ($)?", 'EN': "Your goal - monthly net profit ($)?" },
         type: "number",
-        placeholder: "Masalan: 10000"
+        placeholder: "10000"
     },
     {
         id: "avgCheck",
         questions: { 'UZ': "Mahsulotning o'rtacha cheki ($)?", 'RU': "Средний чек продукта ($)?", 'EN': "Average product check ($)?" },
         type: "number",
-        placeholder: "Masalan: 50"
+        placeholder: "50"
     },
     {
         id: "conversion",
         questions: { 'UZ': "Sotuv konversiyasi (%)?", 'RU': "Конверсия продаж (%)?", 'EN': "Sales conversion (%)?" },
         type: "number",
-        placeholder: "Masalan: 20"
+        placeholder: "20"
     },
     {
         id: "adPlatform",
         questions: { 'UZ': "Asosiy reklama platformangiz?", 'RU': "Основная рекламная платформа?", 'EN': "Main advertising platform?" },
         type: "select",
         options: ["Instagram / Facebook", "Telegram", "Google Ads", "TikTok", "YouTube"]
+    },
+    {
+        id: "adBudget",
+        questions: { 'UZ': "Hozirgi oylik reklama byudjeti ($)?", 'RU': "Текущий месячный рекламный бюджет ($)?", 'EN': "Current monthly ad budget ($)?" },
+        type: "number",
+        placeholder: "1000"
+    },
+    {
+        id: "leadCost",
+        questions: { 'UZ': "Bitta lid (so'rov) narxi qancha ($)?", 'RU': "Сколько стоит один лид ($)?", 'EN': "How much does one lead cost ($)?" },
+        type: "number",
+        placeholder: "1.5"
+    },
+    {
+        id: "marketingStrategy",
+        questions: { 'UZ': "Marketing strategiyangiz bormi?", 'RU': "Есть ли маркетинговая стратегия?", 'EN': "Do you have a marketing strategy?" },
+        type: "options",
+        options: {
+            'UZ': ["Ha, 1 yillik reja bor", "Faqat reklamaga pul tikamiz"],
+            'RU': ["Да, есть план на год", "Только вкладываем в рекламу"],
+            'EN': ["Yes, 1-year plan", "We just spend on ads"]
+        },
+        values: ["yes", "no"]
+    },
+    {
+        id: "automation",
+        questions: { 'UZ': "Biznes jarayonlar avtomatlashganmi?", 'RU': "Автоматизированы ли процессы?", 'EN': "Are processes automated?" },
+        type: "options",
+        options: {
+            'UZ': ["Ha, deyarli hammasi", "Hamma narsa qo'lda qilinadi"],
+            'RU': ["Да, почти все", "Все делается вручную"],
+            'EN': ["Yes, almost everything", "Everything is manual"]
+        },
+        values: ["yes", "no"]
+    },
+    {
+        id: "future",
+        questions: { 'UZ': "6 oydan keyin qayerda bo'lmoqchisiz?", 'RU': "Где вы хотите быть через 6 месяцев?", 'EN': "Where do you want to be in 6 months?" },
+        type: "options",
+        options: {
+            'UZ': ["Bozorni egallash", "Foydani 3 barobar oshirish", "Shunchaki barqarorlik"],
+            'RU': ["Захватить рынок", "Увеличить доход в 3 раза", "Просто стабильность"],
+            'EN': ["Dominate market", "3x more profit", "Just stability"]
+        },
+        values: ["dominate", "3x", "stability"]
     }
 ];
 
@@ -302,7 +354,11 @@ function renderQuestion() {
     if (question.type === 'options') {
         const currentOptions = question.options[currentLang] || question.options['UZ'];
         inputHtml = `<div class="options-grid">
-            ${currentOptions.map(opt => `<div class="option-card ${prevValue === opt ? 'selected' : ''}" onclick="selectOption(this, '${opt}')">${opt}</div>`).join('')}
+            ${currentOptions.map((opt, idx) => `
+                <div class="option-card ${prevValue === question.values[idx] ? 'selected' : ''}" 
+                     onclick="selectOption(this, '${question.values[idx]}')">
+                    ${opt}
+                </div>`).join('')}
         </div>`;
     } else if (question.type === 'select') {
         inputHtml = `<div class="input-group">
@@ -399,11 +455,11 @@ function renderCharts(res) {
 
     // Calculate health scores
     const scores = [
-        answers.crm?.includes("Ha") || answers.crm?.includes("Да") || answers.crm?.includes("Yes") ? 90 : 30,
-        answers.salesTeam?.includes("Ha") || answers.salesTeam?.includes("Да") || answers.salesTeam?.includes("Yes") ? 85 : 40,
-        90, // Marketing (Default for now)
-        (parseFloat(answers.conversion) > 20) ? 80 : 50,
-        95 // Profitability
+        answers.crm === "yes" ? 95 : 30,
+        answers.salesTeam === "yes" ? 90 : 40,
+        answers.marketingStrategy === "yes" ? 95 : 50,
+        (parseFloat(answers.conversion) > 15) ? 85 : 45,
+        answers.automation === "yes" ? 95 : 35
     ];
 
     new Chart(radarCtx, {
@@ -473,29 +529,38 @@ function calculateAudit() {
     const neededSales = target / avgCheck;
     const neededLeads = Math.ceil(neededSales / conv);
 
-    let cpl = 1.5;
-    if (answers.adPlatform === "Telegram") cpl = 0.8;
-    else if (answers.adPlatform === "Google Ads") cpl = 2.5;
-    else if (answers.adPlatform === "Instagram / Facebook") cpl = 1.2;
+    let cpl = parseFloat(answers.leadCost) || 1.5;
 
     let penalty = 1.0;
     let riskPoints = 0;
 
-    if (answers.crm.includes("Yo'q")) { penalty += 0.2; riskPoints += 40; }
-    if (answers.salesTeam.includes("Yo'q") || answers.salesTeam.includes("O'zim")) { penalty += 0.2; riskPoints += 30; }
-    if (answers.socialMedia === "Yomon / Yo'q") { penalty += 0.15; riskPoints += 20; }
+    if (answers.crm === "no") { penalty += 0.25; riskPoints += 40; }
+    if (answers.salesTeam === "no") { penalty += 0.2; riskPoints += 30; }
+    if (answers.automation === "no") { penalty += 0.15; riskPoints += 20; }
+    if (answers.marketingStrategy === "no") { penalty += 0.2; riskPoints += 25; }
 
     const optimalBudget = (neededLeads * cpl) * penalty;
 
-    let riskLevel = "Past";
-    if (riskPoints > 30) riskLevel = "O'rtacha";
-    if (riskPoints > 60) riskLevel = "Yuqori";
+    let riskLevel = "Low";
+    if (riskPoints > 40) riskLevel = "Medium";
+    if (riskPoints > 70) riskLevel = "High";
+
+    const riskMap = {
+        'UZ': { 'Low': 'Past', 'Medium': 'O\'rtacha', 'High': 'Yuqori' },
+        'RU': { 'Low': 'Низкий', 'Medium': 'Средний', 'High': 'Высокий' },
+        'EN': { 'Low': 'Low', 'Medium': 'Medium', 'High': 'High' }
+    };
+
+    // Increment Stats
+    stats.audits++;
+    saveStats();
+    updateAdminUI();
 
     return {
         neededLeads,
         neededSales: Math.ceil(neededSales),
         optimalBudget,
-        riskLevel,
+        riskLevel: riskMap[currentLang][riskLevel],
         penalty: (penalty - 1) * 100
     };
 }
@@ -505,13 +570,27 @@ function renderRecommendations(res) {
     if (!list) return;
     list.innerHTML = "";
 
-    const recs = [];
-    if (answers.crm.includes("Yo'q")) recs.push("<strong>CRM:</strong> Biznesni avtomatlashtirish orqali yo'qotishlarni 20% ga kamaytiring.");
-    if (answers.salesTeam.includes("Yo'q")) recs.push("<strong>Sotuv:</strong> Konversiyani oshirish uchun professional menejerlar yollang.");
-    if (res.penalty > 0) recs.push(`<strong>Byudjet:</strong> Tizim yo'qligi sababli $${Math.round(res.optimalBudget * 0.2)} ortiqcha sarflanmoqda.`);
-    recs.push("<strong>Strategiya:</strong> Haftalik hisobot tizimini yo'lga qo'ying.");
+    const recs = {
+        'UZ': [], 'RU': [], 'EN': []
+    };
 
-    recs.forEach(r => {
+    if (answers.crm === "no") {
+        recs['UZ'].push("<strong>CRM:</strong> Biznesni avtomatlashtirish orqali yo'qotishlarni kamaytiring.");
+        recs['RU'].push("<strong>CRM:</strong> Снизьте потери через автоматизацию.");
+        recs['EN'].push("<strong>CRM:</strong> Reduce losses through business automation.");
+    }
+    if (answers.salesTeam === "no") {
+        recs['UZ'].push("<strong>Sotuv:</strong> Professional sotuv menejerlarini yollash tavsiya etiladi.");
+        recs['RU'].push("<strong>Продажи:</strong> Рекомендуется нанять профессионалов.");
+        recs['EN'].push("<strong>Sales:</strong> Hiring professional sales managers is recommended.");
+    }
+    if (res.penalty > 0) {
+        recs['UZ'].push(`<strong>Xarajat:</strong> Tizim yo'qligi sababli lidlar narxi ${Math.round(res.penalty)}% qimmatga tushmoqda.`);
+        recs['RU'].push(`<strong>Расходы:</strong> Из-за отсутствия систем лиды дороже на ${Math.round(res.penalty)}%.`);
+        recs['EN'].push(`<strong>Costs:</strong> Leads are ${Math.round(res.penalty)}% more expensive due to lack of systems.`);
+    }
+
+    recs[currentLang].forEach(r => {
         const li = document.createElement('li');
         li.innerHTML = r;
         list.appendChild(li);
