@@ -12,7 +12,7 @@ const translations = {
         'sys_3_t': 'Marketing Strategiyasi', 'sys_3_d': 'Target, kontekst va SMM orqali lidlar oqimini barqaror qilish.',
         'footer_about': 'Biznesingizni raqamlar va aniq tahlillar asosida boshqarishingizga yordam beramiz.',
         'founder_role': '🚀 Marketing va IT Ekspert',
-        'founder_desc': 'Elite Audit tizimi asoschisi. Biznesingizni raqamlashtirish, marketing strategiyasini qurish va sotuvlarni avtomatlashtirish bo\'yicha 5+ yillik tajribaga ega mutaxassis.'
+        'founder_desc': '"Ali Invest MChJ" rahbari. Elite Audit tizimi asoschisi. Biznesingizni raqamlashtirish, marketing strategiyasini qurish va sotuvlarni avtomatlashtirish bo\'yicha 5+ yillik tajribaga ega mutaxassis.'
     },
     'RU': {
         'nav_home': 'Главная', 'nav_audit': 'Аудит', 'nav_how': 'Как это работает?', 'nav_systems': 'Системы', 'nav_contact': 'Контакты',
@@ -26,7 +26,7 @@ const translations = {
         'sys_3_t': 'Маркетинговая Стратегия', 'sys_3_d': 'Стабильный поток лидов через таргет, контекст и SMM.',
         'footer_about': 'Помогаем управлять бизнесом на основе цифр и точного анализа.',
         'founder_role': '🚀 Маркетолог и IT Эксперт',
-        'founder_desc': 'Основатель системы Elite Audit. Эксперт с 5-летним опытом в цифровизации бизнеса и автоматизации продаж.'
+        'founder_desc': 'Руководитель "Ali Invest MChJ". Основатель системы Elite Audit. Эксперт с 5-летним опытом в цифровизации бизнеса и автоматизации продаж.'
     },
     'EN': {
         'nav_home': 'Home', 'nav_audit': 'Audit', 'nav_how': 'How it Works?', 'nav_systems': 'Systems', 'nav_contact': 'Contact',
@@ -40,7 +40,7 @@ const translations = {
         'sys_3_t': 'Marketing Strategy', 'sys_3_d': 'Stable lead flow through targeting, PPC, and SMM.',
         'footer_about': 'We help you manage your business based on numbers and precise analysis.',
         'founder_role': '🚀 Marketing & IT Expert',
-        'founder_desc': 'Founder of Elite Audit. Specialist with 5+ years of experience in business digitalization and sales automation.'
+        'founder_desc': 'CEO of "Ali Invest MChJ". Founder of Elite Audit. Specialist with 5+ years of experience in business digitalization and sales automation.'
     }
 };
 
