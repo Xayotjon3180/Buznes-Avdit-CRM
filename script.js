@@ -326,23 +326,36 @@ function showResults() {
 
 function renderCharts(res) {
     // 1. Radar Chart (Business Health Score)
-    const radarCtx = document.getElementById('radarChart').getContext('2d');
+    const radarCtx = document.getElementById('radarChart')?.getContext('2d');
+    if (!radarCtx) return;
 
-    // Calculate health scores (dummy logic based on answers)
+    const labels = {
+        'UZ': ['CRM', 'Sotuv Bo\'limi', 'Marketing', 'Konversiya', 'Daromad'],
+        'RU': ['CRM', 'Отдел продаж', 'Маркетинг', 'Конверсия', 'Доход'],
+        'EN': ['CRM', 'Sales Dept', 'Marketing', 'Conversion', 'Profit']
+    };
+
+    const datasetsLabels = {
+        'UZ': 'Sizning Ko\'rsatkichingiz',
+        'RU': 'Ваш показатель',
+        'EN': 'Your Metrics'
+    };
+
+    // Calculate health scores
     const scores = [
-        answers.crm.includes("Ha") ? 90 : 30, // CRM
-        (answers.salesTeam.includes("Ha")) ? 85 : 40, // Sales Team
-        (answers.socialMedia === "A'lo") ? 95 : (answers.socialMedia === "Yaxshi" ? 70 : 40), // Marketing
-        (parseFloat(answers.conversion) > 20) ? 80 : 50, // Conversion
-        (parseFloat(answers.avgCheck) > 100) ? 90 : 60 // Profitability
+        answers.crm?.includes("Ha") || answers.crm?.includes("Да") || answers.crm?.includes("Yes") ? 90 : 30,
+        answers.salesTeam?.includes("Ha") || answers.salesTeam?.includes("Да") || answers.salesTeam?.includes("Yes") ? 85 : 40,
+        90, // Marketing (Default for now)
+        (parseFloat(answers.conversion) > 20) ? 80 : 50,
+        95 // Profitability
     ];
 
     new Chart(radarCtx, {
         type: 'radar',
         data: {
-            labels: ['CRM', 'Sotuv Bo\'limi', 'Marketing', 'Konversiya', 'Daromad'],
+            labels: labels[currentLang],
             datasets: [{
-                label: 'Sizning Ko\'rsatkichingiz',
+                label: datasetsLabels[currentLang],
                 data: scores,
                 backgroundColor: 'rgba(255, 193, 7, 0.2)',
                 borderColor: '#FFC107',
@@ -356,7 +369,7 @@ function renderCharts(res) {
                 r: {
                     angleLines: { color: 'rgba(255,255,255,0.1)' },
                     grid: { color: 'rgba(255,255,255,0.1)' },
-                    pointLabels: { color: '#94A3B8', font: { size: 10 } },
+                    pointLabels: { color: '#94A3B8', font: { size: 11 } },
                     ticks: { display: false, stepSize: 20 },
                     max: 100,
                     min: 0
@@ -366,11 +379,19 @@ function renderCharts(res) {
     });
 
     // 2. Bar Chart (Financial Forecast)
-    const barCtx = document.getElementById('auditChart').getContext('2d');
+    const barLabels = {
+        'UZ': ['Kerakli Lidlar', 'Loyiq Byudjet ($)', 'Kutilayotgan Sotuv'],
+        'RU': ['Нужные Лиды', 'Оптим. Бюджет ($)', 'Ожид. Продажи'],
+        'EN': ['Required Leads', 'Optimal Budget ($)', 'Expected Sales']
+    };
+
+    const barCtx = document.getElementById('auditChart')?.getContext('2d');
+    if (!barCtx) return;
+
     new Chart(barCtx, {
         type: 'bar',
         data: {
-            labels: ['Kerakli Lidlar', 'Loyiq Byudjet ($)', 'Kutilayotgan Sotuv'],
+            labels: barLabels[currentLang],
             datasets: [{
                 data: [res.neededLeads, res.optimalBudget, res.neededSales],
                 backgroundColor: ['#FFC107', '#FFA000', '#FFD54F'],
