@@ -123,8 +123,10 @@ document.querySelector('.btn-pdf')?.addEventListener('click', () => {
 
 function startAudit() {
     const section = document.getElementById('audit-section');
-    section.style.display = 'block';
-    section.scrollIntoView({ behavior: 'smooth' });
+    if (section) {
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 const questions = [
@@ -272,6 +274,15 @@ window.onload = () => {
     initHeroChart();
     setLang('UZ'); // Init UI titles
     renderWelcome();
+    trackVisit(); // Tracking
+
+    // Auto-start audit for new visitors as requested
+    if (!localStorage.getItem('audit_auto_started')) {
+        setTimeout(() => {
+            startAudit();
+            localStorage.setItem('audit_auto_started', 'true');
+        }, 2000); // 2-second delay to let them see the hero first
+    }
 };
 
 function renderWelcome() {

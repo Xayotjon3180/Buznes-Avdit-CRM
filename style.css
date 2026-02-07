@@ -1522,37 +1522,53 @@ button {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: #fff;
+    background: linear-gradient(135deg, #FFC107, #FF9800);
+    color: #000;
+    /* Dark text for better contrast on yellow */
     padding: 16px 32px;
     border-radius: 14px;
     font-size: 1.1rem;
-    flex: 2;
+    font-weight: 700;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 193, 7, 0.5);
+    background: linear-gradient(135deg, #FFD54F, #FFB300);
+}
+
+.btn-primary.large {
+    padding: 20px 45px;
+    font-size: 1.3rem;
+    border-radius: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .btn-back {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     color: var(--gray);
-    padding: 16px 20px;
+    padding: 16px 30px;
     border-radius: 14px;
     font-size: 1rem;
-    flex: 1;
+    transition: var(--transition);
 }
 
 .btn-back:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 25px -5px rgba(99, 102, 241, 0.5);
 }
 
 .btn-secondary {
@@ -1563,6 +1579,7 @@ button {
     border-radius: 12px;
     margin-top: 20px;
     width: 100%;
+    transition: var(--transition);
 }
 
 .btn-secondary:hover {
