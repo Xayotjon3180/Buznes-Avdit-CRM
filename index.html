@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing & Biznes Auditi | Premium Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">Savol 1 / 12</div>
+        </div>
+
+        <!-- Form Section -->
+        <main class="audit-card" id="auditCard">
+            <div id="step-form">
+                <!-- Steps will be injected here by JS -->
+                <div class="step active" id="step1">
+                    <h1 class="glow-text">Marhaban!</h1>
+                    <p class="subtitle">Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.</p>
+                    
+                    <div class="input-group">
+                        <label for="userName">Ismingiz va Biznesingiz nomi</label>
+                        <input type="text" id="userName" placeholder="Masalan: Alisher, 'Tez Ish Top' MCHJ" autocomplete="off">
+                    </div>
+                    
+                    <button class="btn-primary" onclick="nextStep()">Boshlash <span class="arrow">→</span></button>
+                </div>
+            </div>
+
+            <!-- Results Section (Hidden initially) -->
+            <div id="results" class="hidden">
+                <div class="result-header">
+                    <h2 class="glow-text">Audit Natijalari</h2>
+                    <p id="clientSummary">Alisher, sizning biznesingiz holati tahlil qilindi.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item glass">
+                        <span class="label">Maqsadli Foyda</span>
+                        <span class="value" id="resTargetProfit">$0</span>
+                    </div>
+                    <div class="stat-item glass">
+                        <span class="label">Kerakli Lidlar</span>
+                        <span class="value" id="resLeads">0</span>
+                    </div>
+                    <div class="stat-item glass">
+                        <span class="label">Minimal Byudjet</span>
+                        <span class="value" id="resBudget">$0</span>
+                    </div>
+                    <div class="stat-item glass">
+                        <span class="label">Xavf Darajasi</span>
+                        <span class="value" id="resRisk">O'rtacha</span>
+                    </div>
+                </div>
+
+                <div class="chart-container glass">
+                    <canvas id="auditChart"></canvas>
+                </div>
+
+                <div class="recommendations">
+                    <h3>✅ Professional Tavsiyalar:</h3>
+                    <ul id="recommendationList">
+                        <!-- Dynamic content -->
+                    </ul>
+                </div>
+
+                <button class="btn-secondary" onclick="restart()">Qayta boshlash</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
