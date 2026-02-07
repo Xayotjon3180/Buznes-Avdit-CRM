@@ -1,112 +1,67 @@
-const questions = [
-    {
-        id: "role",
-        question: "Siz biznesda qanday rolga egasiz?",
-        type: "options",
-        options: ["Biznes egasi", "Direktor / Rahbar", "Marketing menejeri", "Sotuv menejeri"]
+// Translation Dictionary
+const translations = {
+    'UZ': {
+        'nav_home': 'Bosh sahifa', 'nav_audit': 'Audit', 'nav_how': 'Qanday ishlaydi?', 'nav_systems': 'Tizimlar', 'nav_contact': 'Bog\'lanish',
+        'hero_badge': '💎 Premium Biznes Analitika', 'hero_title': 'Biznesingizning <span class="highlight">Yashirin</span> Potensialini Oching',
+        'hero_desc': 'Bizning 3D tahlil tizimimiz orqali marketing, sotuv va moliya jarayonlarini professional darajada audit qiling.',
+        'btn_start': 'Auditni Boshlash →', 'btn_details': 'Batafsil ko\'rish',
+        'stat_audits': 'Muvaffaqiyatli Audit', 'stat_growth': 'O\'rtacha o\'sish',
+        'sys_title': 'Biznes Strukturasi va Tizimlari', 'sys_desc': 'Audit natijasida biz quyidagi tizimlarni biznesingizga joriy qilamiz:',
+        'sys_1_t': 'CRM Integratsiyasi', 'sys_1_d': 'Mijozlar bazasini 100% nazorat qilish va sotuv konversiyasini oshirish.',
+        'sys_2_t': 'Sotuv Bo\'limi', 'sys_2_d': 'Professional menejerlar va scriptlar asosida ishlaydigan bo\'lim qurish.',
+        'sys_3_t': 'Marketing Strategiyasi', 'sys_3_d': 'Target, kontekst va SMM orqali lidlar oqimini barqaror qilish.',
+        'footer_about': 'Biznesingizni raqamlar va aniq tahlillar asosida boshqarishingizga yordam beramiz.'
     },
-    {
-        id: "niche",
-        question: "Biznesingiz qaysi sohada faoliyat yuritadi?",
-        type: "select",
-        options: ["Elektron tijorat / Savdo", "Ta'lim / Kurslar", "Xizmat ko'rsatish", "Ishlab chiqarish", "IT / Dasturlash", "Boshqa"]
+    'RU': {
+        'nav_home': 'Главная', 'nav_audit': 'Аудит', 'nav_how': 'Как это работает?', 'nav_systems': 'Системы', 'nav_contact': 'Контакты',
+        'hero_badge': '💎 Премиум Бизнес Аналитика', 'hero_title': 'Раскройте <span class="highlight">Скрытый</span> Потенциал Бизнеса',
+        'hero_desc': 'Профессиональный аудит маркетинга, продаж и финансов через нашу 3D систему анализа.',
+        'btn_start': 'Начать Аудит →', 'btn_details': 'Подробнее',
+        'stat_audits': 'Успешных Аудитов', 'stat_growth': 'Средний рост',
+        'sys_title': 'Структура и Системы Бизнеса', 'sys_desc': 'По результатам аудита мы внедрим следующие системы:',
+        'sys_1_t': 'CRM Интеграция', 'sys_1_d': '100% контроль клиентской базы и рост конверсии продаж.',
+        'sys_2_t': 'Отдел Продаж', 'sys_2_d': 'Создание отдела на основе профессиональных менеджеров и скриптов.',
+        'sys_3_t': 'Маркетинговая Стратегия', 'sys_3_d': 'Стабильный поток лидов через таргет, контекст и SMM.',
+        'footer_about': 'Помогаем управлять бизнесом на основе цифр и точного анализа.'
     },
-    {
-        id: "crm",
-        question: "CRM tizimidan foydalanasizmi? (AmoCRM, Bitrix24 va h.k.)",
-        type: "options",
-        options: ["Ha, foydalanamiz", "Yo'q, hali o'rnatmaganmiz"]
-    },
-    {
-        id: "salesTeam",
-        question: "Alohida sotuv bo'limi yoki menejerlaringiz bormi?",
-        type: "options",
-        options: ["Ha, bor", "Yo'q, o'zim sotaman", "Endi shakllantirmoqchimiz"]
-    },
-    {
-        id: "socialMedia",
-        question: "Ijtimoiy tarmoqlaringiz (Upakovka) holati qanday?",
-        type: "options",
-        options: ["A'lo (Professional)", "Yaxshi", "O'rtacha", "Yomon / Yo'q"]
-    },
-    {
-        id: "currentProfit",
-        question: "Hozirgi oylik sof foydangiz qancha ($)?",
-        type: "number",
-        placeholder: "Masalan: 2000"
-    },
-    {
-        id: "targetProfit",
-        question: "Maqsadingiz - oylik daromadni qanchaga yetkazmoqchisiz ($)?",
-        type: "number",
-        placeholder: "Masalan: 10000"
-    },
-    {
-        id: "avgCheck",
-        question: "Mahsulot/Xizmatning o'rtacha cheki qancha ($)?",
-        type: "number",
-        placeholder: "Masalan: 50"
-    },
-    {
-        id: "conversion",
-        question: "Sotuv konversiyasi necha foiz? (Lid -> Xaridor)",
-        type: "number",
-        placeholder: "Masalan: 20"
-    },
-    {
-        id: "adPlatform",
-        question: "Asosiy reklama platformangiz qaysi?",
-        type: "select",
-        options: ["Instagram / Facebook", "Telegram", "Google Ads", "YouTube", "TikTok", "Barchasi"]
-    },
-    {
-        id: "currentBudget",
-        question: "Reklama uchun ajratishga tayyor bo'lgan oylik byudjetingiz ($)?",
-        type: "number",
-        placeholder: "Masalan: 500"
-    },
-    {
-        id: "leadCost",
-        question: "Hozirgi bitta lid (so'rov) narxi qancha ($)?",
-        type: "number",
-        placeholder: "Bilmasangiz 0 qoldiring"
+    'EN': {
+        'nav_home': 'Home', 'nav_audit': 'Audit', 'nav_how': 'How it Works?', 'nav_systems': 'Systems', 'nav_contact': 'Contact',
+        'hero_badge': '💎 Premium Business Analytics', 'hero_title': 'Unlock Your Business <span class="highlight">Hidden</span> Potential',
+        'hero_desc': 'Professional audit of marketing, sales, and finances through our 3D analysis system.',
+        'btn_start': 'Start Audit →', 'btn_details': 'View Details',
+        'stat_audits': 'Successful Audits', 'stat_growth': 'Average Growth',
+        'sys_title': 'Business Structure & Systems', 'sys_desc': 'Based on the audit, we implement the following systems:',
+        'sys_1_t': 'CRM Integration', 'sys_1_d': '100% customer base control and sales conversion growth.',
+        'sys_2_t': 'Sales Department', 'sys_2_d': 'Building a department based on professional managers and scripts.',
+        'sys_3_t': 'Marketing Strategy', 'sys_3_d': 'Stable lead flow through targeting, PPC, and SMM.',
+        'footer_about': 'We help you manage your business based on numbers and precise analysis.'
     }
-];
+};
 
-let currentStep = 0;
-const answers = {};
+let currentLang = 'UZ';
 
-// Hero Chart Initialization
-window.onload = () => {
-    const ctx = document.getElementById('heroVisualChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May'],
-            datasets: [{
-                label: 'O\'sish',
-                data: [20, 35, 45, 60, 95],
-                borderColor: '#FFC107',
-                backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 5,
-                pointBackgroundColor: '#FFC107'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { grid: { display: false }, ticks: { color: '#94A3B8' } },
-                y: { display: false }
-            }
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-selector span').forEach(s => {
+        s.classList.toggle('active', s.innerText === lang);
+    });
+
+    // Update all elements with data-tr attribute
+    document.querySelectorAll('[data-tr]').forEach(el => {
+        const key = el.getAttribute('data-tr');
+        if (translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
         }
     });
 
-    // Load initial welcome step
-    renderWelcome();
-};
+    // Update questions based on language (this requires questions to be objects with lang versions)
+    // For now, we update static parts
+}
+
+// PDF Export Mockup
+document.querySelector('.btn-pdf')?.addEventListener('click', () => {
+    alert("PDF Hisoboti tayyorlanmoqda... \nTez orada yuklab olish havolasi Telegram orqali yuboriladi.");
+});
 
 function startAudit() {
     const section = document.getElementById('audit-section');
@@ -114,19 +69,121 @@ function startAudit() {
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
+const questions = [
+    {
+        id: "role",
+        questions: { 'UZ': "Siz biznesda qanday rolga egasiz?", 'RU': "Какую роль вы занимаете в бизнесе?", 'EN': "What is your role in the business?" },
+        type: "options",
+        options: {
+            'UZ': ["Biznes egasi", "Direktor / Rahbar", "Marketing menejeri", "Sotuv menejeri"],
+            'RU': ["Владелец", "Директор / Руководитель", "Маркетолог", "Менеджер по продажам"],
+            'EN': ["Business Owner", "Director / Manager", "Marketing Manager", "Sales Manager"]
+        }
+    },
+    {
+        id: "crm",
+        questions: { 'UZ': "CRM tizimidan foydalanasizmi?", 'RU': "Используете ли вы CRM?", 'EN': "Do you use a CRM system?" },
+        type: "options",
+        options: {
+            'UZ': ["Ha, foydalanamiz", "Yo'q, hali o'rnatmaganmiz"],
+            'RU': ["Да, используем", "Нет, еще не установили"],
+            'EN': ["Yes, we use one", "No, not yet"]
+        }
+    },
+    {
+        id: "salesTeam",
+        questions: { 'UZ': "Alohida sotuv bo'limi bormi?", 'RU': "Есть ли отдельный отдел продаж?", 'EN': "Is there a dedicated sales department?" },
+        type: "options",
+        options: {
+            'UZ': ["Ha, bor", "Yo'q, o'zim sotaman"],
+            'RU': ["Да, есть", "Нет, продаю сам"],
+            'EN': ["Yes, we have one", "No, I sell myself"]
+        }
+    },
+    {
+        id: "targetProfit",
+        questions: { 'UZ': "Maqsadingiz - oylik sof foyda ($)?", 'RU': "Ваша цель - чистая прибыль в месяц ($)?", 'EN': "Your goal - monthly net profit ($)?" },
+        type: "number",
+        placeholder: "Masalan: 10000"
+    },
+    {
+        id: "avgCheck",
+        questions: { 'UZ': "Mahsulotning o'rtacha cheki ($)?", 'RU': "Средний чек продукта ($)?", 'EN': "Average product check ($)?" },
+        type: "number",
+        placeholder: "Masalan: 50"
+    },
+    {
+        id: "conversion",
+        questions: { 'UZ': "Sotuv konversiyasi (%)?", 'RU': "Конверсия продаж (%)?", 'EN': "Sales conversion (%)?" },
+        type: "number",
+        placeholder: "Masalan: 20"
+    },
+    {
+        id: "adPlatform",
+        questions: { 'UZ': "Asosiy reklama platformangiz?", 'RU': "Основная рекламная платформа?", 'EN': "Main advertising platform?" },
+        type: "select",
+        options: ["Instagram / Facebook", "Telegram", "Google Ads", "TikTok", "YouTube"]
+    }
+];
+
+let currentStep = 0;
+const answers = {};
+
+// Hero Chart Initialization
+function initHeroChart() {
+    const canvas = document.getElementById('heroVisualChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            datasets: [{
+                label: 'Growth',
+                data: [15, 40, 35, 75, 98],
+                borderColor: '#FFC107',
+                backgroundColor: 'rgba(255, 193, 7, 0.15)',
+                fill: true,
+                tension: 0.5,
+                pointRadius: 6,
+                pointBackgroundColor: '#FFC107',
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: '#94A3B8' } },
+                y: { display: false }
+            }
+        }
+    });
+}
+
+window.onload = () => {
+    initHeroChart();
+    setLang('UZ'); // Init UI titles
+    renderWelcome();
+};
+
 function renderWelcome() {
     const formContainer = document.getElementById('step-form');
+    const welcomeTitle = currentLang === 'UZ' ? 'Marhaban!' : (currentLang === 'RU' ? 'Добро пожаловать!' : 'Welcome!');
+    const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.' : (currentLang === 'RU' ? 'Начнем аудит, чтобы вывести ваш бизнес на новый уровень.' : 'Let\'s start the audit to take your business to the next level.');
+    const label = currentLang === 'UZ' ? 'Ismingiz va Biznesingiz nomi' : (currentLang === 'RU' ? 'Ваше имя и название бизнеса' : 'Your name and business name');
+    const btn = currentLang === 'UZ' ? 'Boshlash' : (currentLang === 'RU' ? 'Начать' : 'Start');
+
     formContainer.innerHTML = `
-        <div class="step active" id="step1">
-            <h2 class="glow-text">Marhaban!</h2>
-            <p class="subtitle" style="margin-bottom: 20px;">Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.</p>
-            
+        <div class="step active">
+            <h2 class="glow-text">${welcomeTitle}</h2>
+            <p class="subtitle" style="margin-bottom: 20px;">${welcomeDesc}</p>
             <div class="input-group">
-                <label for="userName">Ismingiz va Biznesingiz nomi</label>
-                <input type="text" id="userName" placeholder="Masalan: Alisher, 'Tez Ish Top' MCHJ" autocomplete="off">
+                <label>${label}</label>
+                <input type="text" id="userName" placeholder="Alisher, Elite Audit" autocomplete="off">
             </div>
-            
-            <button class="btn-primary" onclick="nextStep()">Boshlash <span class="arrow">→</span></button>
+            <button class="btn-primary" onclick="nextStep()">${btn} <span class="arrow">→</span></button>
         </div>
     `;
 }
@@ -175,14 +232,21 @@ function prevStep() {
 }
 
 function renderQuestion() {
-    const question = questions[currentStep];
+    const question = questions[currentStep - 1];
     const formContainer = document.getElementById('step-form');
     let prevValue = answers[question.id] || '';
 
+    const questionText = question.questions[currentLang] || question.questions['UZ'];
+    const backBtnText = currentLang === 'UZ' ? 'Orqaga' : (currentLang === 'RU' ? 'Назад' : 'Back');
+    const nextBtnText = currentStep === questions.length ?
+        (currentLang === 'UZ' ? 'Natijalarni ko\'rish' : (currentLang === 'RU' ? 'Посмотреть результаты' : 'View Results')) :
+        (currentLang === 'UZ' ? 'Keyingisi' : (currentLang === 'RU' ? 'Далее' : 'Next'));
+
     let inputHtml = '';
     if (question.type === 'options') {
+        const currentOptions = question.options[currentLang] || question.options['UZ'];
         inputHtml = `<div class="options-grid">
-            ${question.options.map(opt => `<div class="option-card ${prevValue === opt ? 'selected' : ''}" onclick="selectOption(this, '${opt}')">${opt}</div>`).join('')}
+            ${currentOptions.map(opt => `<div class="option-card ${prevValue === opt ? 'selected' : ''}" onclick="selectOption(this, '${opt}')">${opt}</div>`).join('')}
         </div>`;
     } else if (question.type === 'select') {
         inputHtml = `<div class="input-group">
@@ -198,18 +262,19 @@ function renderQuestion() {
 
     formContainer.innerHTML = `
         <div class="step active">
-            <h2 class="glow-text">${question.question}</h2>
+            <h2 class="glow-text">${questionText}</h2>
             ${inputHtml}
             <div class="button-group">
-                <button class="btn-back" onclick="prevStep()">Orqaga</button>
-                <button class="btn-primary" onclick="nextStep()">${currentStep === questions.length - 1 ? 'Natijalarni ko\'rish' : 'Keyingisi'} <span class="arrow">→</span></button>
+                <button class="btn-back" onclick="prevStep()">${backBtnText}</button>
+                <button class="btn-primary" onclick="nextStep()">${nextBtnText} <span class="arrow">→</span></button>
             </div>
         </div>
     `;
 }
 
 function selectOption(el, val) {
-    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    const parent = el.parentElement;
+    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     el.dataset.value = val;
 }
