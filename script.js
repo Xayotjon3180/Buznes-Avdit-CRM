@@ -331,9 +331,15 @@ function renderWelcome() {
 
 function nextStep() {
     if (currentStep === 0) {
-        const uName = document.getElementById('userName').value.trim();
-        const bName = document.getElementById('businessName').value.trim();
-        const bType = document.getElementById('businessType').value;
+        const uNameInput = document.getElementById('userName');
+        const bNameInput = document.getElementById('businessName');
+        const bTypeInput = document.getElementById('businessType');
+
+        if (!uNameInput || !bNameInput) return;
+
+        const uName = uNameInput.value.trim();
+        const bName = bNameInput.value.trim();
+        const bType = bTypeInput.value;
 
         if (!uName || !bName) {
             alert(currentLang === 'UZ' ? "Iltimos, barcha maydonlarni to'ldiring." : "Пожалуйста, заполните все поля.");
@@ -341,28 +347,28 @@ function nextStep() {
         }
 
         answers.userName = uName;
+        answers.name = uName; // Compatibility for results
         answers.businessName = bName;
         answers.businessType = bType;
-        renderQuestion();
-    } else if (currentStep <= questions.length) {
+    } else {
         const question = questions[currentStep - 1];
         const value = getInputValue(question);
 
         if (value === null || value === "") {
-            alert("Iltimos, javobni kiriting yoki tanlang.");
+            alert(currentLang === 'UZ' ? "Iltimos, javobni tanlang yoki kiriting." : "Пожалуйста, выберите или введите ответ.");
             return;
         }
 
         answers[question.id] = value;
-
-        if (currentStep < questions.length) {
-            renderQuestion();
-        } else {
-            showResults();
-        }
     }
 
     currentStep++;
+
+    if (currentStep <= questions.length) {
+        renderQuestion();
+    } else {
+        showResults();
+    }
     updateProgress();
 }
 
@@ -371,9 +377,8 @@ function prevStep() {
         currentStep = 0;
         renderWelcome();
     } else {
-        currentStep -= 2;
+        currentStep--;
         renderQuestion();
-        currentStep++;
     }
     updateProgress();
 }
