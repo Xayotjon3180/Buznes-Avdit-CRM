@@ -9,11 +9,9 @@ let stats = JSON.parse(localStorage.getItem('elite_audit_stats')) || {
 
 function trackVisit() {
     const today = new Date().toISOString().split('T')[0];
-    if (!localStorage.getItem('visited_today')) {
-        stats.visitors++;
-        stats.daily[today] = (stats.daily[today] || 0) + 1;
-        localStorage.setItem('visited_today', 'true');
-    }
+    // Count every single entry as requested
+    stats.visitors++;
+    stats.daily[today] = (stats.daily[today] || 0) + 1;
     saveStats();
     updateAdminUI();
 }
@@ -278,19 +276,43 @@ window.onload = () => {
 
 function renderWelcome() {
     const formContainer = document.getElementById('step-form');
-    const welcomeTitle = "ELITE AUDIT"; // Branded title as requested
-    const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni tahlil qilish va SSRM tizimini joriy etishni boshlaymiz.' : (currentLang === 'RU' ? 'Начнем анализ бизнеса и внедрение системы SSRM.' : 'Let\'s start business analysis and SSRM implementation.');
-    const label = currentLang === 'UZ' ? 'Ismingiz va Biznesingiz nomi' : (currentLang === 'RU' ? 'Ваше имя и название бизнеса' : 'Your name and business name');
+    const welcomeTitle = "ELITE AUDIT TIZIMI";
+    const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni raqamli tahlil qilish uchun ma\'lumotlarni kiriting.' : (currentLang === 'RU' ? 'Введите данные для цифрового анализа вашего бизнеса.' : 'Enter your details for digital business analysis.');
+
+    // Labels based on language
+    const labels = {
+        'UZ': ['Ismingiz', 'Biznesingiz nomi', 'Faoliyat turi'],
+        'RU': ['Ваше имя', 'Название бизнеса', 'Вид деятельности'],
+        'EN': ['Your name', 'Business name', 'Activity type']
+    };
+
     const btn = currentLang === 'UZ' ? 'Auditni Boshlash →' : (currentLang === 'RU' ? 'Начать Аудит →' : 'Start Audit →');
 
     formContainer.innerHTML = `
-        <div class="step active">
+        <div class="step active welcome-step">
             <h2 class="glow-text main-title">${welcomeTitle}</h2>
-            <p class="subtitle" style="margin-bottom: 30px; font-size: 1.2rem;">${welcomeDesc}</p>
-            <div class="input-group">
-                <label>${label}</label>
-                <input type="text" id="userName" placeholder="Alisher, Elite Audit" autocomplete="off">
+            <p class="subtitle">${welcomeDesc}</p>
+            
+            <div class="registration-form">
+                <div class="input-group">
+                    <label>${labels[currentLang][0]}</label>
+                    <input type="text" id="userName" placeholder="Alisher" value="${answers.userName || ''}">
+                </div>
+                <div class="input-group">
+                    <label>${labels[currentLang][1]}</label>
+                    <input type="text" id="businessName" placeholder="Elite Marketing" value="${answers.businessName || ''}">
+                </div>
+                <div class="input-group">
+                    <label>${labels[currentLang][2]}</label>
+                    <select id="businessType">
+                        <option value="service" ${answers.businessType === 'service' ? 'selected' : ''}>Xizmat ko'rsatish</option>
+                        <option value="trade" ${answers.businessType === 'trade' ? 'selected' : ''}>Savdo / Sotuv</option>
+                        <option value="production" ${answers.businessType === 'production' ? 'selected' : ''}>Ishlab chiqarish</option>
+                        <option value="education" ${answers.businessType === 'education' ? 'selected' : ''}>Ta'lim / Kurslar</option>
+                    </select>
+                </div>
             </div>
+            
             <button class="btn-primary large" onclick="nextStep()">${btn}</button>
         </div>
     `;
@@ -298,12 +320,18 @@ function renderWelcome() {
 
 function nextStep() {
     if (currentStep === 0) {
-        const nameInput = document.getElementById('userName');
-        if (!nameInput || !nameInput.value.trim()) {
-            alert("Iltimos, ismingizni kiriting.");
+        const uName = document.getElementById('userName').value.trim();
+        const bName = document.getElementById('businessName').value.trim();
+        const bType = document.getElementById('businessType').value;
+
+        if (!uName || !bName) {
+            alert(currentLang === 'UZ' ? "Iltimos, barcha maydonlarni to'ldiring." : "Пожалуйста, заполните все поля.");
             return;
         }
-        answers.name = nameInput.value;
+
+        answers.userName = uName;
+        answers.businessName = bName;
+        answers.businessType = bType;
         renderQuestion();
     } else if (currentStep <= questions.length) {
         const question = questions[currentStep - 1];

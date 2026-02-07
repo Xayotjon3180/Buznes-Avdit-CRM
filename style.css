@@ -580,17 +580,46 @@ body.light-mode .founder-content h3 {
     min-height: 100vh;
 }
 
-.glow-text.main-title {
-    font-size: 3.5rem;
-    /* Larger title */
-    margin-bottom: 20px;
-    text-shadow: 0 0 30px rgba(255, 193, 7, 0.3);
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    text-align: left;
 }
 
-.btn-primary.large {
-    padding: 20px 45px;
-    font-size: 1.3rem;
-    border-radius: 20px;
+.registration-form .input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--gray);
+    font-weight: 600;
+}
+
+.registration-form input,
+.registration-form select {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.registration-form input:focus,
+.registration-form select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.welcome-step .subtitle {
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    opacity: 0.8;
 }
 
 .audit-container {
