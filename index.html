@@ -48,10 +48,12 @@
                     <a href="javascript:void(0)" class="btn-main" onclick="startAudit()" data-tr="btn_start">Auditni
                         Boshlash →</a>
                     <div class="contact-controls">
-                        <a href="https://t.me/Xayotjon_1996" target="_blank" class="contact-bubble tg" title="Telegram">
+                        <a href="javascript:void(0)" onclick="trackContact('tg')" class="contact-bubble tg"
+                            title="Telegram">
                             <span class="icon">✈️</span>
                         </a>
-                        <a href="tel:+998998653180" class="contact-bubble phone" title="Qo'ng'iroq">
+                        <a href="tel:+998998653180" onclick="trackContact('phone')" class="contact-bubble phone"
+                            title="Qo'ng'iroq">
                             <span class="icon">📞</span>
                         </a>
                     </div>
@@ -171,11 +173,23 @@
 
     </main>
 
-    <!-- Chat Widget -->
+    <!-- Hidden Admin Panel -->
+    <div id="admin-panel" class="admin-dashboard-overlay">
+        <div class="admin-content glass">
+            <h3>📊 Admin Analytics</h3>
+            <div id="admin-stats" class="stats-grid">
+                <!-- Stats will be injected here by JS -->
+            </div>
+            <button onclick="toggleAdmin()" class="btn-outline">Yopish</button>
+        </div>
+    </div>
+
+    <!-- Premium Floating Chat Widget -->
     <div class="chat-widget">
-        <a href="https://t.me/EliteAudit_Admin" target="_blank" class="chat-btn">
+        <div class="chat-tooltip" onclick="trackContact('tg')">Savolingiz bormi? 😉</div>
+        <a href="javascript:void(0)" onclick="trackContact('tg')" class="chat-btn">
             <span>💬</span>
-            <div class="chat-badge"></div>
+            <div class="chat-badge pulse"></div>
         </a>
     </div>
 

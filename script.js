@@ -1,4 +1,50 @@
 // Translation Dictionary
+// Analytics & Visitor Tracking
+let stats = JSON.parse(localStorage.getItem('elite_audit_stats')) || {
+    visitors: 0,
+    audits: 0,
+    contacts: 0,
+    daily: {}
+};
+
+function trackVisit() {
+    const today = new Date().toISOString().split('T')[0];
+    if (!localStorage.getItem('visited_today')) {
+        stats.visitors++;
+        stats.daily[today] = (stats.daily[today] || 0) + 1;
+        localStorage.setItem('visited_today', 'true');
+    }
+    saveStats();
+    updateAdminUI();
+}
+
+function trackContact(type) {
+    stats.contacts++;
+    saveStats();
+    updateAdminUI();
+    if (type === 'tg') window.open('https://t.me/Xayotjon_1996', '_blank');
+}
+
+function saveStats() {
+    localStorage.setItem('elite_audit_stats', JSON.stringify(stats));
+}
+
+function updateAdminUI() {
+    const adminPanel = document.getElementById('admin-stats');
+    if (adminPanel) {
+        adminPanel.innerHTML = `
+            <div class="stat">Visitors: ${stats.visitors}</div>
+            <div class="stat">Audits: ${stats.audits}</div>
+            <div class="stat">Contacts: ${stats.contacts}</div>
+        `;
+    }
+}
+
+function toggleAdmin() {
+    const panel = document.getElementById('admin-panel');
+    panel.classList.toggle('active');
+}
+
 const translations = {
     'UZ': {
         'nav_home': 'Bosh sahifa', 'nav_audit': 'Audit', 'nav_how': 'Qanday ishlaydi?', 'nav_systems': 'Tizimlar', 'nav_contact': 'Bog\'lanish',
