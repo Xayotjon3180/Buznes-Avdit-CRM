@@ -63,86 +63,129 @@ p {
     opacity: 0.9;
 }
 
-/* Header Styles */
+/* Header Styles - Premium Navigation (Expanded) */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 8%;
+    padding: 20px 3%;
+    /* Pushed further to edges */
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 100;
-    background: rgba(11, 14, 20, 0.8);
-    backdrop-filter: blur(15px);
+    z-index: 1000;
+    background: rgba(11, 14, 20, 0.4);
+    /* More transparent */
+    backdrop-filter: blur(30px);
+    /* Heavier blur */
+    border-bottom: 1px solid var(--glass-border);
     transition: var(--transition);
 }
 
 body.light-mode header {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.7);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-size: 2rem;
+    /* Slightly larger */
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    display: flex;
+    align-items: center;
 }
 
 .logo span:first-child {
-    color: var(--primary);
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    /* Golden gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .logo span:last-child {
     color: var(--white);
 }
 
+body.light-mode .logo span:last-child {
+    color: var(--dark);
+}
+
 nav ul {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 40px;
 }
 
 nav ul li a {
     text-decoration: none;
     color: var(--gray);
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+    padding: 5px 0;
 }
 
-nav ul li a.active,
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li a.active {
     color: var(--white);
-    border-bottom: 2px solid var(--primary);
-    padding-bottom: 5px;
+}
+
+body.light-mode nav ul li a:hover,
+body.light-mode nav ul li a.active {
+    color: var(--primary);
+}
+
+/* Elegant Underline */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--primary);
+    transition: var(--transition);
+    border-radius: 10px;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+    width: 100%;
 }
 
 .header-tools {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
+    /* More gap */
 }
 
 .lang-selector {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2px;
     border-radius: 50px;
     display: flex;
-    gap: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    /* Golden border hint */
 }
 
 .lang-selector span {
     cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: var(--gray);
+    transition: var(--transition);
 }
 
-/* Language Selector Active */
 .lang-selector span.active {
-    color: var(--primary);
-    background: rgba(255, 193, 7, 0.1);
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
 }
 
 .theme-toggle {
@@ -313,12 +356,13 @@ body.light-mode .founder-content h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
-    border-radius: 40px;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    padding: 50px;
+    background: rgba(25, 30, 40, 0.6);
+    border: 2px solid rgba(255, 215, 0, 0.1);
+    /* Subtle Gold border */
+    backdrop-filter: blur(40px);
+    border-radius: 50px;
+    box-shadow: 0 50px 120px rgba(0, 0, 0, 0.8);
     animation: slideInRight 1s ease-out;
 }
 
@@ -336,19 +380,34 @@ body.light-mode .founder-content h3 {
 
 .profile-img-wrap {
     position: relative;
-    width: 250px;
-    height: 250px;
-    margin-bottom: 25px;
+    width: 280px;
+    height: 280px;
+    margin-bottom: 30px;
 }
 
-/* Rotating Gold Ring */
+/* Prestige Gold Rings */
 .profile-img-wrap::before {
     content: '';
     position: absolute;
-    inset: -15px;
-    border: 3px dashed var(--primary);
+    inset: -20px;
+    border: 4px solid var(--primary);
     border-radius: 50%;
-    animation: rotateRing 15s linear infinite;
+    box-shadow: 0 0 40px rgba(255, 193, 7, 0.4);
+    animation: pulseGold 3s infinite ease-in-out;
+}
+
+@keyframes pulseGold {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
 }
 
 .profile-img-wrap::after {
@@ -371,9 +430,9 @@ body.light-mode .founder-content h3 {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-    border: 10px solid var(--dark);
+    border: 8px solid var(--dark);
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .profile-info-text {
@@ -381,39 +440,46 @@ body.light-mode .founder-content h3 {
 }
 
 .profile-info-text .founder-name {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 5px;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 10px;
 }
 
 .profile-info-text .founder-status {
-    color: var(--primary);
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+    color: #FFC107;
+    /* Clear yellow gold */
+    font-size: 1.3rem;
+    font-weight: 800;
     text-transform: uppercase;
-    margin-bottom: 15px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
     display: block;
 }
 
 .description-box {
-    background: rgba(255, 193, 7, 0.05);
-    border-left: 4px solid var(--primary);
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-    text-align: left;
+    background: rgba(255, 193, 7, 0.08);
+    /* More visible gold background */
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 25px;
 }
 
 .description-box p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 0;
+    font-size: 1.2rem;
+    /* Larger text */
+    line-height: 1.6;
+    color: #FFD700;
+    /* Gold text for description */
+    font-weight: 500;
 }
 
 .description-box span {
-    color: var(--primary);
-    font-weight: 700;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 10px;
 }
 
 /* Stats Enhancement */
@@ -911,6 +977,18 @@ footer {
 }
 
 @media (max-width: 900px) {
+    header {
+        padding: 15px 5%;
+    }
+
+    nav ul {
+        display: none;
+        /* Hide desktop menu on mobile for app feel */
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
 
     .charts-wrap,
     .footer-content,
