@@ -75,17 +75,70 @@ const questions = [
 
 let currentStep = 0;
 const answers = {};
-const stepHistory = [];
-const userNameInput = document.getElementById('userName');
+
+// Hero Chart Initialization
+window.onload = () => {
+    const ctx = document.getElementById('heroVisualChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May'],
+            datasets: [{
+                label: 'O\'sish',
+                data: [20, 35, 45, 60, 95],
+                borderColor: '#FFC107',
+                backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: '#FFC107'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: '#94A3B8' } },
+                y: { display: false }
+            }
+        }
+    });
+
+    // Load initial welcome step
+    renderWelcome();
+};
+
+function startAudit() {
+    const section = document.getElementById('audit-section');
+    section.style.display = 'block';
+    section.scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderWelcome() {
+    const formContainer = document.getElementById('step-form');
+    formContainer.innerHTML = `
+        <div class="step active" id="step1">
+            <h2 class="glow-text">Marhaban!</h2>
+            <p class="subtitle" style="margin-bottom: 20px;">Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.</p>
+            
+            <div class="input-group">
+                <label for="userName">Ismingiz va Biznesingiz nomi</label>
+                <input type="text" id="userName" placeholder="Masalan: Alisher, 'Tez Ish Top' MCHJ" autocomplete="off">
+            </div>
+            
+            <button class="btn-primary" onclick="nextStep()">Boshlash <span class="arrow">→</span></button>
+        </div>
+    `;
+}
 
 function nextStep() {
     if (currentStep === 0) {
-        const name = document.getElementById('userName').value;
-        if (!name.trim()) {
+        const nameInput = document.getElementById('userName');
+        if (!nameInput || !nameInput.value.trim()) {
             alert("Iltimos, ismingizni kiriting.");
             return;
         }
-        answers.name = name;
+        answers.name = nameInput.value;
         renderQuestion();
     } else if (currentStep <= questions.length) {
         const question = questions[currentStep - 1];
@@ -111,23 +164,10 @@ function nextStep() {
 
 function prevStep() {
     if (currentStep <= 1) {
-        // Back to welcome screen
         currentStep = 0;
-        document.getElementById('step-form').innerHTML = `
-            <div class="step active" id="step1">
-                <h1 class="glow-text">Marhaban!</h1>
-                <p class="subtitle">Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.</p>
-                
-                <div class="input-group">
-                    <label for="userName">Ismingiz va Biznesingiz nomi</label>
-                    <input type="text" id="userName" value="${answers.name || ''}" placeholder="Masalan: Alisher, 'Tez Ish Top' MCHJ" autocomplete="off">
-                </div>
-                
-                <button class="btn-primary" onclick="nextStep()">Boshlash <span class="arrow">→</span></button>
-            </div>
-        `;
+        renderWelcome();
     } else {
-        currentStep -= 2; // Go back two steps because nextStep increments
+        currentStep -= 2;
         renderQuestion();
         currentStep++;
     }

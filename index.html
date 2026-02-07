@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,79 +11,121 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
-
-    <div class="container">
-        <!-- Progress Bar -->
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-            <div class="progress-text" id="progressText">Savol 1 / 12</div>
+    <header>
+        <div class="logo"><span>RRG</span> <span>AUDIT</span></div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Bosh sahifa</a></li>
+                <li><a href="#audit-section">Audit</a></li>
+                <li><a href="#">Tarix</a></li>
+                <li><a href="#">Biz haqimizda</a></li>
+            </ul>
+        </nav>
+        <div class="header-tools">
+            <div class="lang-selector">
+                <span class="active">UZ</span>
+                <span>RU</span>
+                <span>EN</span>
+            </div>
+            <div class="theme-toggle">🌙</div>
         </div>
+    </header>
 
-        <!-- Form Section -->
-        <main class="audit-card" id="auditCard">
-            <div id="step-form">
-                <!-- Steps will be injected here by JS -->
-                <div class="step active" id="step1">
-                    <h1 class="glow-text">Marhaban!</h1>
-                    <p class="subtitle">Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.</p>
-                    
-                    <div class="input-group">
-                        <label for="userName">Ismingiz va Biznesingiz nomi</label>
-                        <input type="text" id="userName" placeholder="Masalan: Alisher, 'Tez Ish Top' MCHJ" autocomplete="off">
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="badge">🚀 Professional Biznes Audit</div>
+                <h1>Biznesingizni <span class="highlight">Professional</span> Tahlil Qiling</h1>
+                <p>Marketing va moliyaviy ko'rsatkichlaringizni chuqur tahlil qilib, biznesingiz uchun optimal
+                    strategiyani aniqlang.</p>
+                <div class="hero-ctas">
+                    <a href="javascript:void(0)" class="btn-main" onclick="startAudit()">Auditni Boshlash →</a>
+                    <a href="#" class="btn-outline">Batafsil</a>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat-box">
+                        <span class="number">500+</span>
+                        <span class="label">Audit</span>
                     </div>
-                    
-                    <button class="btn-primary" onclick="nextStep()">Boshlash <span class="arrow">→</span></button>
+                    <div class="stat-box">
+                        <span class="number">98%</span>
+                        <span class="label">Mamnun</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="number">50+</span>
+                        <span class="label">Sohalar</span>
+                    </div>
                 </div>
             </div>
-
-            <!-- Results Section (Hidden initially) -->
-            <div id="results" class="hidden">
-                <div class="result-header">
-                    <h2 class="glow-text">Audit Natijalari</h2>
-                    <p id="clientSummary">Alisher, sizning biznesingiz holati tahlil qilindi.</p>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-item glass">
-                        <span class="label">Maqsadli Foyda</span>
-                        <span class="value" id="resTargetProfit">$0</span>
-                    </div>
-                    <div class="stat-item glass">
-                        <span class="label">Kerakli Lidlar</span>
-                        <span class="value" id="resLeads">0</span>
-                    </div>
-                    <div class="stat-item glass">
-                        <span class="label">Minimal Byudjet</span>
-                        <span class="value" id="resBudget">$0</span>
-                    </div>
-                    <div class="stat-item glass">
-                        <span class="label">Xavf Darajasi</span>
-                        <span class="value" id="resRisk">O'rtacha</span>
-                    </div>
-                </div>
-
-                <div class="chart-container glass">
-                    <canvas id="auditChart"></canvas>
-                </div>
-
-                <div class="recommendations">
-                    <h3>✅ Professional Tavsiyalar:</h3>
-                    <ul id="recommendationList">
-                        <!-- Dynamic content -->
-                    </ul>
-                </div>
-
-                <button class="btn-secondary" onclick="restart()">Qayta boshlash</button>
+            <div class="hero-visual glass">
+                <canvas id="heroVisualChart"></canvas>
+                <div class="floating-icon" style="top: -20px; right: 20px;">💡</div>
+                <div class="floating-icon" style="bottom: 20px; left: -20px;">📊</div>
+                <div class="floating-icon" style="bottom: 40px; right: -10px;">🎯</div>
             </div>
-        </main>
-    </div>
+        </section>
+
+        <!-- Audit Section (Hidden by default) -->
+        <section id="audit-section">
+            <div class="container">
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-text" id="progressText">Savol 1 / 12</div>
+                </div>
+
+                <div class="audit-card" id="auditCard">
+                    <!-- Form content will be injected by JS -->
+                    <div id="step-form"></div>
+
+                    <!-- Results Section -->
+                    <div id="results" class="hidden">
+                        <div class="result-header">
+                            <h2 class="glow-text">Audit Natijalari</h2>
+                            <p id="clientSummary"></p>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-item glass">
+                                <span class="label">Maqsadli Foyda</span>
+                                <span class="value" id="resTargetProfit">$0</span>
+                            </div>
+                            <div class="stat-item glass">
+                                <span class="label">Kerakli Lidlar</span>
+                                <span class="value" id="resLeads">0</span>
+                            </div>
+                            <div class="stat-item glass">
+                                <span class="label">Minimal Byudjet</span>
+                                <span class="value" id="resBudget">$0</span>
+                            </div>
+                            <div class="stat-item glass">
+                                <span class="label">Xavf Darajasi</span>
+                                <span class="value" id="resRisk">O'rtacha</span>
+                            </div>
+                        </div>
+
+                        <div class="chart-container glass">
+                            <canvas id="auditChart"></canvas>
+                        </div>
+
+                        <div class="recommendations">
+                            <h3>✅ Professional Tavsiyalar:</h3>
+                            <ul id="recommendationList">
+                                <!-- Dynamic content -->
+                            </ul>
+                        </div>
+
+                        <button class="btn-secondary" onclick="restart()">Qayta boshlash</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>
