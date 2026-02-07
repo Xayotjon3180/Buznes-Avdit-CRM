@@ -6,10 +6,15 @@
     --dark: #0B0E14;
     --darker: #05070A;
     --white: #FFFFFF;
+    --light-bg: #F8FAFC;
+    --light-card: #FFFFFF;
+    --text-dark: #F8FAFC;
+    --text-light: #1E293B;
     --gray: #94A3B8;
     --glass: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --grid-color: rgba(255, 255, 255, 0.03);
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -20,14 +25,42 @@
 }
 
 body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
     background-color: var(--dark);
+    color: var(--text-dark);
+    line-height: 1.6;
     background-image:
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
     background-size: 40px 40px;
-    color: var(--white);
+    transition: background var(--transition), color var(--transition);
     min-height: 100vh;
     overflow-x: hidden;
+}
+
+body.light-mode {
+    background-color: var(--light-bg);
+    color: var(--text-light);
+    --grid-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Typography Scale Up */
+h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.15rem;
+    opacity: 0.9;
 }
 
 /* Header Styles */
@@ -41,7 +74,13 @@ header {
     width: 100%;
     z-index: 100;
     background: rgba(11, 14, 20, 0.8);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    transition: var(--transition);
+}
+
+body.light-mode header {
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -107,10 +146,17 @@ nav ul li a:hover {
 }
 
 .theme-toggle {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 8px;
-    border-radius: 50%;
     cursor: pointer;
+    font-size: 1.4rem;
+    padding: 8px;
+    border-radius: 12px;
+    transition: var(--transition);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+}
+
+.theme-toggle:hover {
+    transform: rotate(15deg) scale(1.1);
 }
 
 /* Hero Section */
@@ -164,22 +210,23 @@ nav ul li a:hover {
 }
 
 .btn-main {
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 15px;
     background: var(--primary);
     color: var(--dark);
-    padding: 18px 36px;
-    border-radius: 12px;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: 0.3s;
+    transition: var(--transition);
+    display: inline-block;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
 .btn-main:hover {
-    background: var(--primary-hover);
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 193, 7, 0.3);
 }
 
 .btn-outline {
