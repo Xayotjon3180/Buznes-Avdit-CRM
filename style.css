@@ -574,9 +574,23 @@ body.light-mode .founder-content h3 {
 
 /* Audit Section Premium Styles */
 .audit-section {
-    padding: 120px 5%;
+    padding: 80px 5% 120px;
+    /* Reduced top padding to move it up */
     background: var(--darker);
     min-height: 100vh;
+}
+
+.glow-text.main-title {
+    font-size: 3.5rem;
+    /* Larger title */
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(255, 193, 7, 0.3);
+}
+
+.btn-primary.large {
+    padding: 20px 45px;
+    font-size: 1.3rem;
+    border-radius: 20px;
 }
 
 .audit-container {
@@ -702,6 +716,42 @@ body.light-mode .founder-content h3 {
     display: flex;
     justify-content: center;
     gap: 20px;
+}
+
+/* Benefit Card Style */
+.benefit-card {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    padding: 30px;
+    border-radius: 25px;
+    margin-top: 30px;
+    text-align: left;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.benefit-card h5 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.benefit-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--white);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Hero CTAs & Contact Controls */

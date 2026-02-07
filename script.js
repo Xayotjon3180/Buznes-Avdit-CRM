@@ -278,20 +278,20 @@ window.onload = () => {
 
 function renderWelcome() {
     const formContainer = document.getElementById('step-form');
-    const welcomeTitle = currentLang === 'UZ' ? 'Marhaban!' : (currentLang === 'RU' ? 'Добро пожаловать!' : 'Welcome!');
-    const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni yangi bosqichga olib chiqish uchun auditni boshlaymiz.' : (currentLang === 'RU' ? 'Начнем аудит, чтобы вывести ваш бизнес на новый уровень.' : 'Let\'s start the audit to take your business to the next level.');
+    const welcomeTitle = "ELITE AUDIT"; // Branded title as requested
+    const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni tahlil qilish va SSRM tizimini joriy etishni boshlaymiz.' : (currentLang === 'RU' ? 'Начнем анализ бизнеса и внедрение системы SSRM.' : 'Let\'s start business analysis and SSRM implementation.');
     const label = currentLang === 'UZ' ? 'Ismingiz va Biznesingiz nomi' : (currentLang === 'RU' ? 'Ваше имя и название бизнеса' : 'Your name and business name');
-    const btn = currentLang === 'UZ' ? 'Boshlash' : (currentLang === 'RU' ? 'Начать' : 'Start');
+    const btn = currentLang === 'UZ' ? 'Auditni Boshlash →' : (currentLang === 'RU' ? 'Начать Аудит →' : 'Start Audit →');
 
     formContainer.innerHTML = `
         <div class="step active">
-            <h2 class="glow-text">${welcomeTitle}</h2>
-            <p class="subtitle" style="margin-bottom: 20px;">${welcomeDesc}</p>
+            <h2 class="glow-text main-title">${welcomeTitle}</h2>
+            <p class="subtitle" style="margin-bottom: 30px; font-size: 1.2rem;">${welcomeDesc}</p>
             <div class="input-group">
                 <label>${label}</label>
                 <input type="text" id="userName" placeholder="Alisher, Elite Audit" autocomplete="off">
             </div>
-            <button class="btn-primary" onclick="nextStep()">${btn} <span class="arrow">→</span></button>
+            <button class="btn-primary large" onclick="nextStep()">${btn}</button>
         </div>
     `;
 }
@@ -567,34 +567,58 @@ function calculateAudit() {
 
 function renderRecommendations(res) {
     const list = document.getElementById('recommendationList');
+    const benefitSection = document.getElementById('benefit-content');
     if (!list) return;
     list.innerHTML = "";
 
     const recs = {
-        'UZ': [], 'RU': [], 'EN': []
+        'UZ': [
+            "<strong>CRM:</strong> Sotuv jarayonini 100% nazoratga olish va mijoz yo'qotishni to'xtatish.",
+            "<strong>Sotuv Bo'limi:</strong> Menejerlar uchun aniq KPI va tizimli scriptlar joriy etish.",
+            "<strong>Marketing:</strong> Lidlar narxini optimal darajaga tushirish va lid oqimini barqaror qilish."
+        ],
+        'RU': [
+            "<strong>CRM:</strong> 100% контроль воронки продаж и остановка потери клиентов.",
+            "<strong>Отдел продаж:</strong> Внедрение четких KPI и скриптов для менеджеров.",
+            "<strong>Маркетинг:</strong> Оптимизация цены лида и обеспечение регулярного потока."
+        ],
+        'EN': [
+            "<strong>CRM:</strong> 100% sales funnel control and stopping lead leakage.",
+            "<strong>Sales Dept:</strong> Implementing clear KPIs and scripts for managers.",
+            "<strong>Marketing:</strong> Lead cost optimization and stable traffic flow."
+        ]
     };
 
-    if (answers.crm === "no") {
-        recs['UZ'].push("<strong>CRM:</strong> Biznesni avtomatlashtirish orqali yo'qotishlarni kamaytiring.");
-        recs['RU'].push("<strong>CRM:</strong> Снизьте потери через автоматизацию.");
-        recs['EN'].push("<strong>CRM:</strong> Reduce losses through business automation.");
-    }
-    if (answers.salesTeam === "no") {
-        recs['UZ'].push("<strong>Sotuv:</strong> Professional sotuv menejerlarini yollash tavsiya etiladi.");
-        recs['RU'].push("<strong>Продажи:</strong> Рекомендуется нанять профессионалов.");
-        recs['EN'].push("<strong>Sales:</strong> Hiring professional sales managers is recommended.");
-    }
-    if (res.penalty > 0) {
-        recs['UZ'].push(`<strong>Xarajat:</strong> Tizim yo'qligi sababli lidlar narxi ${Math.round(res.penalty)}% qimmatga tushmoqda.`);
-        recs['RU'].push(`<strong>Расходы:</strong> Из-за отсутствия систем лиды дороже на ${Math.round(res.penalty)}%.`);
-        recs['EN'].push(`<strong>Costs:</strong> Leads are ${Math.round(res.penalty)}% more expensive due to lack of systems.`);
-    }
+    const benefits = {
+        'UZ': `
+            <div class="benefit-card">
+                <h5>🏆 Nima yutasiz?</h5>
+                <p>Biznesingizda tartib va tizim o'rnatiladi. SSRM tizimi orqali har bir so'm reklama pullari nazorat qilinadi. Sof foydangiz kamida 2-3 barobar o'sishi uchun poydevor yaratiladi.</p>
+            </div>
+        `,
+        'RU': `
+            <div class="benefit-card">
+                <h5>🏆 Что вы получите?</h5>
+                <p>В бизнесе будет наведен полный порядок. Через систему SSRM каждый сум рекламного бюджета будет под контролем. Создастся фундамент для роста прибыли в 2-3 раза.</p>
+            </div>
+        `,
+        'EN': `
+            <div class="benefit-card">
+                <h5>🏆 What will you gain?</h5>
+                <p>Full order and system in your business. Every cent of ad spend will be tracked via SSRM. A foundation for 2-3x profit growth will be established.</p>
+            </div>
+        `
+    };
 
     recs[currentLang].forEach(r => {
         const li = document.createElement('li');
         li.innerHTML = r;
         list.appendChild(li);
     });
+
+    if (benefitSection) {
+        benefitSection.innerHTML = benefits[currentLang];
+    }
 }
 
 function restart() {
