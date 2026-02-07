@@ -1,4 +1,3 @@
-// Translation Dictionary
 // Analytics & Visitor Tracking
 let stats = JSON.parse(localStorage.getItem('elite_audit_stats')) || {
     visitors: 0,
@@ -9,7 +8,6 @@ let stats = JSON.parse(localStorage.getItem('elite_audit_stats')) || {
 
 function trackVisit() {
     const today = new Date().toISOString().split('T')[0];
-    // Count every single entry as requested
     stats.visitors++;
     stats.daily[today] = (stats.daily[today] || 0) + 1;
     saveStats();
@@ -38,13 +36,13 @@ function updateAdminUI() {
     }
     const visitorDisplay = document.getElementById('visitor-count');
     if (visitorDisplay) {
-        visitorDisplay.innerText = stats.visitors + 120; // Simulated active + base
+        visitorDisplay.innerText = stats.visitors + 120;
     }
 }
 
 function toggleAdmin() {
     const panel = document.getElementById('admin-panel');
-    panel.classList.toggle('active');
+    panel?.classList.toggle('active');
 }
 
 const translations = {
@@ -93,6 +91,8 @@ const translations = {
 };
 
 let currentLang = 'UZ';
+let currentStep = 0;
+const answers = {};
 
 function setLang(lang) {
     currentLang = lang;
@@ -108,18 +108,13 @@ function setLang(lang) {
     });
 
     if (currentStep === 0) renderWelcome();
-    else if (currentStep > 0 && currentStep <= questions.length) renderQuestion();
 }
 
 function toggleTheme() {
     const isLight = document.body.classList.toggle('light-mode');
-    document.getElementById('themeBtn').innerText = isLight ? '☀️' : '🌙';
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.innerText = isLight ? '☀️' : '🌙';
 }
-
-// PDF Export Mockup
-document.querySelector('.btn-pdf')?.addEventListener('click', () => {
-    alert("PDF Hisoboti tayyorlanmoqda... \nTez orada yuklab olish havolasi Telegram orqali yuboriladi.");
-});
 
 function startAudit() {
     const section = document.getElementById('audit-section');
@@ -182,18 +177,6 @@ const questions = [
         placeholder: "20"
     },
     {
-        id: "adPlatform",
-        questions: { 'UZ': "Asosiy reklama platformangiz?", 'RU': "Основная рекламная платформа?", 'EN': "Main advertising platform?" },
-        type: "select",
-        options: ["Instagram / Facebook", "Telegram", "Google Ads", "TikTok", "YouTube"]
-    },
-    {
-        id: "adBudget",
-        questions: { 'UZ': "Hozirgi oylik reklama byudjeti ($)?", 'RU': "Текущий месячный рекламный бюджет ($)?", 'EN': "Current monthly ad budget ($)?" },
-        type: "number",
-        placeholder: "1000"
-    },
-    {
         id: "leadCost",
         questions: { 'UZ': "Bitta lid (so'rov) narxi qancha ($)?", 'RU': "Сколько стоит один лид ($)?", 'EN': "How much does one lead cost ($)?" },
         type: "number",
@@ -204,9 +187,9 @@ const questions = [
         questions: { 'UZ': "Marketing strategiyangiz bormi?", 'RU': "Есть ли маркетинговая стратегия?", 'EN': "Do you have a marketing strategy?" },
         type: "options",
         options: {
-            'UZ': ["Ha, 1 yillik reja bor", "Faqat reklamaga pul tikamiz"],
-            'RU': ["Да, есть план на год", "Только вкладываем в рекламу"],
-            'EN': ["Yes, 1-year plan", "We just spend on ads"]
+            'UZ': ["Ha, 1 yillik reja bor", "Yo'q, faqat reklama"],
+            'RU': ["Да, есть план на год", "Нет, только реклама"],
+            'EN': ["Yes, 1-year plan", "No, just ads"]
         },
         values: ["yes", "no"]
     },
@@ -215,82 +198,21 @@ const questions = [
         questions: { 'UZ': "Biznes jarayonlar avtomatlashganmi?", 'RU': "Автоматизированы ли процессы?", 'EN': "Are processes automated?" },
         type: "options",
         options: {
-            'UZ': ["Ha, deyarli hammasi", "Hamma narsa qo'lda qilinadi"],
-            'RU': ["Да, почти все", "Все делается вручную"],
-            'EN': ["Yes, almost everything", "Everything is manual"]
+            'UZ': ["Ha, deyarli hammasi", "Yo'q, qo'lda"],
+            'RU': ["Да, почти все", "Нет, вручную"],
+            'EN': ["Yes, almost everything", "No, manually"]
         },
         values: ["yes", "no"]
-    },
-    {
-        id: "future",
-        questions: { 'UZ': "6 oydan keyin qayerda bo'lmoqchisiz?", 'RU': "Где вы хотите быть через 6 месяцев?", 'EN': "Where do you want to be in 6 months?" },
-        type: "options",
-        options: {
-            'UZ': ["Bozorni egallash", "Foydani 3 barobar oshirish", "Shunchaki barqarorlik"],
-            'RU': ["Захватить рынок", "Увеличить доход в 3 раза", "Просто стабильность"],
-            'EN': ["Dominate market", "3x more profit", "Just stability"]
-        },
-        values: ["dominate", "3x", "stability"]
     }
 ];
 
-let currentStep = 0;
-const answers = {};
-
-// Hero Chart Initialization
-function initHeroChart() {
-    const canvas = document.getElementById('heroVisualChart');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-            datasets: [{
-                label: 'Growth',
-                data: [15, 40, 35, 75, 98],
-                borderColor: '#FFC107',
-                backgroundColor: 'rgba(255, 193, 7, 0.15)',
-                fill: true,
-                tension: 0.5,
-                pointRadius: 6,
-                pointBackgroundColor: '#FFC107',
-                borderWidth: 3
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { grid: { display: false }, ticks: { color: '#94A3B8' } },
-                y: { display: false }
-            }
-        }
-    });
-}
-
-window.onload = () => {
-    initHeroChart();
-    setLang('UZ'); // Init UI titles
-    renderWelcome();
-    trackVisit(); // Tracking
-
-    // Auto-start audit for new visitors as requested
-    if (!localStorage.getItem('audit_auto_started')) {
-        setTimeout(() => {
-            startAudit();
-            localStorage.setItem('audit_auto_started', 'true');
-        }, 2000); // 2-second delay to let them see the hero first
-    }
-};
-
 function renderWelcome() {
     const formContainer = document.getElementById('step-form');
+    if (!formContainer) return;
+
     const welcomeTitle = "ELITE AUDIT TIZIMI";
     const welcomeDesc = currentLang === 'UZ' ? 'Biznesingizni raqamli tahlil qilish uchun ma\'lumotlarni kiriting.' : (currentLang === 'RU' ? 'Введите данные для цифрового анализа вашего бизнеса.' : 'Enter your details for digital business analysis.');
 
-    // Labels based on language
     const labels = {
         'UZ': ['Ismingiz', 'Biznesingiz nomi', 'Faoliyat turi'],
         'RU': ['Ваше имя', 'Название бизнеса', 'Вид деятельности'],
@@ -301,7 +223,7 @@ function renderWelcome() {
 
     formContainer.innerHTML = `
         <div class="step active welcome-step">
-            <h2 class="glow-text main-title">${welcomeTitle}</h2>
+            <h1 class="main-title">${welcomeTitle}</h1>
             <p class="subtitle">${welcomeDesc}</p>
             
             <div class="registration-form">
@@ -316,10 +238,10 @@ function renderWelcome() {
                 <div class="input-group">
                     <label>${labels[currentLang][2]}</label>
                     <select id="businessType">
-                        <option value="service" ${answers.businessType === 'service' ? 'selected' : ''}>Xizmat ko'rsatish</option>
-                        <option value="trade" ${answers.businessType === 'trade' ? 'selected' : ''}>Savdo / Sotuv</option>
-                        <option value="production" ${answers.businessType === 'production' ? 'selected' : ''}>Ishlab chiqarish</option>
-                        <option value="education" ${answers.businessType === 'education' ? 'selected' : ''}>Ta'lim / Kurslar</option>
+                        <option value="service">Xizmat ko'rsatish</option>
+                        <option value="trade">Savdo / Sotuv</option>
+                        <option value="production">Ishlab chiqarish</option>
+                        <option value="education">Ta'lim / Kurslar</option>
                     </select>
                 </div>
             </div>
@@ -331,31 +253,25 @@ function renderWelcome() {
 
 function nextStep() {
     if (currentStep === 0) {
-        const uNameInput = document.getElementById('userName');
-        const bNameInput = document.getElementById('businessName');
-        const bTypeInput = document.getElementById('businessType');
-
-        if (!uNameInput || !bNameInput) return;
-
-        const uName = uNameInput.value.trim();
-        const bName = bNameInput.value.trim();
-        const bType = bTypeInput.value;
+        const uName = document.getElementById('userName')?.value.trim();
+        const bName = document.getElementById('businessName')?.value.trim();
+        const bType = document.getElementById('businessType')?.value;
 
         if (!uName || !bName) {
-            alert(currentLang === 'UZ' ? "Iltimos, barcha maydonlarni to'ldiring." : "Пожалуйста, заполните все поля.");
+            alert("Iltimos, barcha maydonlarni to'ldiring.");
             return;
         }
 
         answers.userName = uName;
-        answers.name = uName; // Compatibility for results
+        answers.name = uName;
         answers.businessName = bName;
         answers.businessType = bType;
     } else {
         const question = questions[currentStep - 1];
         const value = getInputValue(question);
 
-        if (value === null || value === "") {
-            alert(currentLang === 'UZ' ? "Iltimos, javobni tanlang yoki kiriting." : "Пожалуйста, выберите или введите ответ.");
+        if (!value) {
+            alert("Iltimos, javobni tanlang yoki kiriting.");
             return;
         }
 
@@ -373,11 +289,12 @@ function nextStep() {
 }
 
 function prevStep() {
-    if (currentStep <= 1) {
-        currentStep = 0;
+    currentStep--;
+    if (currentStep < 0) currentStep = 0;
+
+    if (currentStep === 0) {
         renderWelcome();
     } else {
-        currentStep--;
         renderQuestion();
     }
     updateProgress();
@@ -386,13 +303,12 @@ function prevStep() {
 function renderQuestion() {
     const question = questions[currentStep - 1];
     const formContainer = document.getElementById('step-form');
-    let prevValue = answers[question.id] || '';
+    if (!formContainer || !question) return;
 
+    let prevValue = answers[question.id] || '';
     const questionText = question.questions[currentLang] || question.questions['UZ'];
     const backBtnText = currentLang === 'UZ' ? 'Orqaga' : (currentLang === 'RU' ? 'Назад' : 'Back');
-    const nextBtnText = currentStep === questions.length ?
-        (currentLang === 'UZ' ? 'Natijalarni ko\'rish' : (currentLang === 'RU' ? 'Посмотреть результаты' : 'View Results')) :
-        (currentLang === 'UZ' ? 'Keyingisi' : (currentLang === 'RU' ? 'Далее' : 'Next'));
+    const nextBtnText = currentStep === questions.length ? 'Natijalarni ko\'rish' : 'Keyingisi';
 
     let inputHtml = '';
     if (question.type === 'options') {
@@ -403,12 +319,6 @@ function renderQuestion() {
                      onclick="selectOption(this, '${question.values[idx]}')">
                     ${opt}
                 </div>`).join('')}
-        </div>`;
-    } else if (question.type === 'select') {
-        inputHtml = `<div class="input-group">
-            <select id="q-${question.id}">
-                ${question.options.map(opt => `<option value="${opt}" ${prevValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-            </select>
         </div>`;
     } else if (question.type === 'number') {
         inputHtml = `<div class="input-group">
@@ -430,7 +340,7 @@ function renderQuestion() {
 
 function selectOption(el, val) {
     const parent = el.parentElement;
-    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    parent?.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     el.dataset.value = val;
 }
@@ -464,105 +374,24 @@ function showResults() {
     const formSection = document.getElementById('step-form');
     const progressWrap = document.getElementById('progressContainer');
 
-    if (formSection) formSection.classList.add('hidden');
-    if (resultsSection) resultsSection.classList.remove('hidden');
-    if (progressWrap) progressWrap.classList.add('hidden');
+    formSection?.classList.add('hidden');
+    resultsSection?.classList.remove('hidden');
+    progressWrap?.classList.add('hidden');
 
     const res = calculateAudit();
 
-    document.getElementById('clientSummary').innerText = `${answers.name}, biznesingiz tahlil qilindi.`;
-    document.getElementById('resTargetProfit').innerText = `$${Number(answers.targetProfit).toLocaleString()}`;
+    const clientSummary = document.getElementById('clientSummary');
+    if (clientSummary) clientSummary.innerText = `${answers.name}, biznesingiz tahlil qilindi.`;
+
+    const resTarget = document.getElementById('resTargetProfit');
+    if (resTarget) resTarget.innerText = `$${Number(answers.targetProfit).toLocaleString()}`;
+
     document.getElementById('resLeads').innerText = res.neededLeads.toLocaleString();
     document.getElementById('resBudget').innerText = `$${Math.round(res.optimalBudget).toLocaleString()}`;
     document.getElementById('resRisk').innerText = res.riskLevel;
 
     renderCharts(res);
     renderRecommendations(res);
-}
-
-function renderCharts(res) {
-    // 1. Radar Chart (Business Health Score)
-    const radarCtx = document.getElementById('radarChart')?.getContext('2d');
-    if (!radarCtx) return;
-
-    const labels = {
-        'UZ': ['CRM', 'Sotuv Bo\'limi', 'Marketing', 'Konversiya', 'Daromad'],
-        'RU': ['CRM', 'Отдел продаж', 'Маркетинг', 'Конверсия', 'Доход'],
-        'EN': ['CRM', 'Sales Dept', 'Marketing', 'Conversion', 'Profit']
-    };
-
-    const datasetsLabels = {
-        'UZ': 'Sizning Ko\'rsatkichingiz',
-        'RU': 'Ваш показатель',
-        'EN': 'Your Metrics'
-    };
-
-    // Calculate health scores
-    const scores = [
-        answers.crm === "yes" ? 95 : 30,
-        answers.salesTeam === "yes" ? 90 : 40,
-        answers.marketingStrategy === "yes" ? 95 : 50,
-        (parseFloat(answers.conversion) > 15) ? 85 : 45,
-        answers.automation === "yes" ? 95 : 35
-    ];
-
-    new Chart(radarCtx, {
-        type: 'radar',
-        data: {
-            labels: labels[currentLang],
-            datasets: [{
-                label: datasetsLabels[currentLang],
-                data: scores,
-                backgroundColor: 'rgba(255, 193, 7, 0.2)',
-                borderColor: '#FFC107',
-                pointBackgroundColor: '#FFC107',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            plugins: { legend: { display: false } },
-            scales: {
-                r: {
-                    angleLines: { color: 'rgba(255,255,255,0.1)' },
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    pointLabels: { color: '#94A3B8', font: { size: 11 } },
-                    ticks: { display: false, stepSize: 20 },
-                    max: 100,
-                    min: 0
-                }
-            }
-        }
-    });
-
-    // 2. Bar Chart (Financial Forecast)
-    const barLabels = {
-        'UZ': ['Kerakli Lidlar', 'Loyiq Byudjet ($)', 'Kutilayotgan Sotuv'],
-        'RU': ['Нужные Лиды', 'Оптим. Бюджет ($)', 'Ожид. Продажи'],
-        'EN': ['Required Leads', 'Optimal Budget ($)', 'Expected Sales']
-    };
-
-    const barCtx = document.getElementById('auditChart')?.getContext('2d');
-    if (!barCtx) return;
-
-    new Chart(barCtx, {
-        type: 'bar',
-        data: {
-            labels: barLabels[currentLang],
-            datasets: [{
-                data: [res.neededLeads, res.optimalBudget, res.neededSales],
-                backgroundColor: ['#FFC107', '#FFA000', '#FFD54F'],
-                borderRadius: 10
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94A3B8' } },
-                x: { grid: { display: false }, ticks: { color: '#94A3B8' } }
-            }
-        }
-    });
 }
 
 function calculateAudit() {
@@ -572,16 +401,15 @@ function calculateAudit() {
 
     const neededSales = target / avgCheck;
     const neededLeads = Math.ceil(neededSales / conv);
-
-    let cpl = parseFloat(answers.leadCost) || 1.5;
+    const cpl = parseFloat(answers.leadCost) || 1.5;
 
     let penalty = 1.0;
     let riskPoints = 0;
 
     if (answers.crm === "no") { penalty += 0.25; riskPoints += 40; }
     if (answers.salesTeam === "no") { penalty += 0.2; riskPoints += 30; }
-    if (answers.automation === "no") { penalty += 0.15; riskPoints += 20; }
     if (answers.marketingStrategy === "no") { penalty += 0.2; riskPoints += 25; }
+    if (answers.automation === "no") { penalty += 0.15; riskPoints += 20; }
 
     const optimalBudget = (neededLeads * cpl) * penalty;
 
@@ -595,7 +423,6 @@ function calculateAudit() {
         'EN': { 'Low': 'Low', 'Medium': 'Medium', 'High': 'High' }
     };
 
-    // Increment Stats
     stats.audits++;
     saveStats();
     updateAdminUI();
@@ -609,59 +436,65 @@ function calculateAudit() {
     };
 }
 
+function renderCharts(res) {
+    const radarCtx = document.getElementById('radarChart')?.getContext('2d');
+    if (radarCtx) {
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['CRM', 'Sotuv', 'Marketing', 'Konversiya', 'Avtomat'],
+                datasets: [{
+                    label: 'Health Score',
+                    data: [
+                        answers.crm === "yes" ? 95 : 30,
+                        answers.salesTeam === "yes" ? 90 : 40,
+                        answers.marketingStrategy === "yes" ? 95 : 45,
+                        (parseFloat(answers.conversion) > 15) ? 90 : 50,
+                        answers.automation === "yes" ? 95 : 35
+                    ],
+                    backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                    borderColor: '#FFC107',
+                    borderWidth: 2
+                }]
+            },
+            options: { scales: { r: { ticks: { display: false }, max: 100, min: 0 } } }
+        });
+    }
+
+    const barCtx = document.getElementById('auditChart')?.getContext('2d');
+    if (barCtx) {
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Lidlar', 'Byudjet', 'Sotuv'],
+                datasets: [{
+                    data: [res.neededLeads, res.optimalBudget, res.neededSales],
+                    backgroundColor: ['#FFC107', '#FFA000', '#FFD54F']
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+}
+
 function renderRecommendations(res) {
     const list = document.getElementById('recommendationList');
     const benefitSection = document.getElementById('benefit-content');
     if (!list) return;
-    list.innerHTML = "";
 
-    const recs = {
-        'UZ': [
-            "<strong>CRM:</strong> Sotuv jarayonini 100% nazoratga olish va mijoz yo'qotishni to'xtatish.",
-            "<strong>Sotuv Bo'limi:</strong> Menejerlar uchun aniq KPI va tizimli scriptlar joriy etish.",
-            "<strong>Marketing:</strong> Lidlar narxini optimal darajaga tushirish va lid oqimini barqaror qilish."
-        ],
-        'RU': [
-            "<strong>CRM:</strong> 100% контроль воронки продаж и остановка потери клиентов.",
-            "<strong>Отдел продаж:</strong> Внедрение четких KPI и скриптов для менеджеров.",
-            "<strong>Маркетинг:</strong> Оптимизация цены лида и обеспечение регулярного потока."
-        ],
-        'EN': [
-            "<strong>CRM:</strong> 100% sales funnel control and stopping lead leakage.",
-            "<strong>Sales Dept:</strong> Implementing clear KPIs and scripts for managers.",
-            "<strong>Marketing:</strong> Lead cost optimization and stable traffic flow."
-        ]
-    };
-
-    const benefits = {
-        'UZ': `
-            <div class="benefit-card">
-                <h5>🏆 Nima yutasiz?</h5>
-                <p>Biznesingizda tartib va tizim o'rnatiladi. SSRM tizimi orqali har bir so'm reklama pullari nazorat qilinadi. Sof foydangiz kamida 2-3 barobar o'sishi uchun poydevor yaratiladi.</p>
-            </div>
-        `,
-        'RU': `
-            <div class="benefit-card">
-                <h5>🏆 Что вы получите?</h5>
-                <p>В бизнесе будет наведен полный порядок. Через систему SSRM каждый сум рекламного бюджета будет под контролем. Создастся фундамент для роста прибыли в 2-3 раза.</p>
-            </div>
-        `,
-        'EN': `
-            <div class="benefit-card">
-                <h5>🏆 What will you gain?</h5>
-                <p>Full order and system in your business. Every cent of ad spend will be tracked via SSRM. A foundation for 2-3x profit growth will be established.</p>
-            </div>
-        `
-    };
-
-    recs[currentLang].forEach(r => {
-        const li = document.createElement('li');
-        li.innerHTML = r;
-        list.appendChild(li);
-    });
+    list.innerHTML = `
+        <li><strong>CRM:</strong> Sotuv jarayonini 100% nazoratga oling.</li>
+        <li><strong>Sotuv:</strong> Menejerlar uchun aniq KPI o'rnating.</li>
+        <li><strong>Marketing:</strong> Lidlar narxini optimal darajaga tushiring.</li>
+    `;
 
     if (benefitSection) {
-        benefitSection.innerHTML = benefits[currentLang];
+        benefitSection.innerHTML = `
+            <div class="benefit-card">
+                <h5>🏆 Nima yutasiz?</h5>
+                <p>Biznesingizda tartib o'rnatiladi va foydangiz 2-3 barobargacha o'sadi.</p>
+            </div>
+        `;
     }
 }
 
@@ -669,55 +502,15 @@ function restart() {
     location.reload();
 }
 
-function selectOption(el, val) {
-    const parent = el.parentElement;
-    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    el.dataset.value = val;
-}
+window.onload = () => {
+    trackVisit();
+    setLang('UZ');
+    renderWelcome();
 
-function getInputValue(question) {
-    if (question.type === 'options') {
-        const selected = document.querySelector('.option-card.selected');
-        return selected ? selected.dataset.value : null;
-    } else {
-        const input = document.getElementById(`q-${question.id}`);
-        return input ? input.value : null;
+    if (!localStorage.getItem('audit_auto_started')) {
+        setTimeout(() => {
+            startAudit();
+            localStorage.setItem('audit_auto_started', 'true');
+        }, 2000);
     }
-}
-
-function renderQuestion() {
-    const question = questions[currentStep - 1]; // currentStep starts at 1 here
-    const formContainer = document.getElementById('step-form');
-    if (!formContainer) return;
-
-    let prevValue = answers[question.id] || '';
-    let inputHtml = '';
-
-    if (question.type === 'options') {
-        inputHtml = `<div class="options-grid">
-            ${question.options.map(opt => `<div class="option-card ${prevValue === opt ? 'selected' : ''}" onclick="selectOption(this, '${opt}')">${opt}</div>`).join('')}
-        </div>`;
-    } else if (question.type === 'select') {
-        inputHtml = `<div class="input-group">
-            <select id="q-${question.id}">
-                ${question.options.map(opt => `<option value="${opt}" ${prevValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-            </select>
-        </div>`;
-    } else if (question.type === 'number') {
-        inputHtml = `<div class="input-group">
-            <input type="number" id="q-${question.id}" value="${prevValue}" placeholder="${question.placeholder}">
-        </div>`;
-    }
-
-    formContainer.innerHTML = `
-        <div class="step active">
-            <h2 class="glow-text">${question.question}</h2>
-            ${inputHtml}
-            <div class="button-group">
-                <button class="btn-back" onclick="prevStep()">Orqaga</button>
-                <button class="btn-primary" onclick="nextStep()">${currentStep === questions.length ? 'Natijalarni ko\'rish' : 'Keyingisi'} <span class="arrow">→</span></button>
-            </div>
-        </div>
-    `;
-}
+};
